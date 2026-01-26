@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellObject : MonoBehaviour
+public class VisualGridManager : MonoBehaviour
 {
-    public NewCells CellInfo;
 }

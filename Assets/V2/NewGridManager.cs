@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class NewGridManager : MonoBehaviour
 {
-    public static event Action<Vector2, int, int, int> OnNewCellAdded;
-
     public int Height;
     public int Width;
 
     public int Rows;
     public int Columns;
+
+    public GameObject CellsPrefab;
 
     public Vector2 currentLoc = Vector2.zero;
     public List<Vector2> PosInGrid = new List<Vector2>();
@@ -19,6 +19,7 @@ public class NewGridManager : MonoBehaviour
     private void Start()
     {
         int rowCount = 0;
+        int id = 0;
 
         for(int i = 0; i <= Columns; i++)
         {
@@ -35,8 +36,22 @@ public class NewGridManager : MonoBehaviour
             }
 
             PosInGrid.Add(currentLoc);
+
+            CreateNewCell(currentLoc, id, rowCount, i);
+
             currentLoc.x += Width;
+
+            id++;
         }
+    }
+
+    private void CreateNewCell(Vector2 newPos, int id, int atRow, int AtCol)
+    {
+        GameObject newCell = Instantiate(CellsPrefab, newPos, Quaternion.identity);
+
+        CellObject newCellComponent = newCell.gameObject.AddComponent<CellObject>();
+
+        newCellComponent.CellInfo = new NewCells(id, atRow, AtCol);
     }
 
 }
