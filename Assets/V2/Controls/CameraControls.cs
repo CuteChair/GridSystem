@@ -17,6 +17,14 @@ public class CameraControls : MonoBehaviour
     [SerializeField]
     private float zoomSens;
 
+    [SerializeField]
+    private float minOrtSize;
+
+    [SerializeField]
+    private float maxOrtSize;
+
+    float camSizeMod;
+
     private void Awake()
     {
         p_camera = GetComponent<Camera>();
@@ -30,27 +38,20 @@ public class CameraControls : MonoBehaviour
 
     public void OnZoom(InputAction.CallbackContext context)
     {
-        Vector2 scrollInput = context.ReadValue<Vector2>();
+        float scrollY = context.ReadValue<Vector2>().y;
 
-        float camSizeMod = 0;
+        float ortSizeMult = Mathf.Clamp(scrollY, -1f, 1f);
 
-        if (scrollInput.y > 0)
-        {
-            camSizeMod = 1;
-        }
-        if(scrollInput.y < 0)
-        {
-            camSizeMod = -1;
-        }
-
-        p_camera.orthographicSize += camSizeMod * zoomSens;
-
-
-        
+        p_camera.orthographicSize = Mathf.Clamp(
+            p_camera.orthographicSize - ortSizeMult * zoomSens,
+            minOrtSize,
+            maxOrtSize
+            );
     }
 
     private void Update()
     {
         transform.Translate(newDirection * moveSpeed * Time.deltaTime);
     }
+
 }
