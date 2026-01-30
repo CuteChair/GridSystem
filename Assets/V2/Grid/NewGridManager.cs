@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NewGridManager : MonoBehaviour
 {
+    public static NewGridManager Instance;
+
     public static event Action<int, CellObject> OnNewCellCreated;
     public static event Action<int, int> OnWholeGridGenerated;
 
@@ -16,8 +18,15 @@ public class NewGridManager : MonoBehaviour
     public GameObject CellsPrefab;
 
     public Vector2 currentLoc = Vector2.zero;
-    public List<Vector2> PosInGrid = new List<Vector2>();
 
+    private Dictionary<Vector2, bool> posInGrid = new Dictionary<Vector2, bool>();
+    //public HashSet<Vector2> posInGrid = new HashSet<Vector2>();
+
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         int rowCount = 0;
@@ -40,7 +49,7 @@ public class NewGridManager : MonoBehaviour
                 }
             }
 
-            PosInGrid.Add(currentLoc);
+            posInGrid.Add(currentLoc, false);
 
             CreateNewCell(currentLoc, id, rowCount + 1, i + 1);
 
@@ -59,6 +68,16 @@ public class NewGridManager : MonoBehaviour
         newCellComponent.CellInfo = new NewCells(id, atRow, AtCol);
 
         OnNewCellCreated?.Invoke(id , newCellComponent);
+    }
+
+    public bool RequestBuild(Vector2 newPos)
+    {
+        if (posInGrid.ContainsKey(newPos))
+        {
+            return true;
+        }
+        else
+            return false;
     }
 
 }
