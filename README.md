@@ -9,14 +9,6 @@ The goal of this prototype is to validate the robustness and flexibility of the 
 
 ---
 
-## Gameplay Features
-- Point-and-click shooting mechanics
-- Streak-based scoring system acting as a score multiplier
-- Time-limited targets that leave the play area
-- Score feedback through VFX
-
----
-
 ## Systems implemented 
 
 **Grid System**
